@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yourself</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri&display=swap">
+  <style>
+    body {
+      background: linear-gradient(180deg, #23234b 0%, #283045 100%);
+      color: #c0c0c0;
+      padding: 20px;
+      font-family: 'Georgia', serif;
+      animation: fadeIn 2s ease forwards;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 { 
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 10px;
+      animation: floatEffect 4s ease-in-out infinite;
+      color: #e7e7ef;
+    }
+    h2 {
+      font-size: 1.5rem;
+      border-bottom: 1px solid #3b3b52;
+      padding-bottom: 5px;
+      color: #e7e7ef;
+      text-align: center;
+    }
+    /* Audio player style */
+    .nasheed-block {
+      text-align: center;
+      margin-bottom: 18px;
+      margin-top: 18px;
+    }
+    .nasheed-block audio {
+      width: 100%;
+      max-width: 360px;
+      border-radius: 11px;
+      box-shadow: 0 3px 8px #e2d2be40;
+    }
+    .nasheed-block .caption {
+      color: #e1deda;
+      font-size: 0.97rem;
+      margin-top: 6px;
+    }
+    /* Book style sections */
+    .book-section {
+      perspective: 1200px;
+      margin-bottom: 24px;
+    }
+    .book-cover {
+      width: 100%;
+      background: #3b3b52;
+      color: #e8e5df;
+      padding: 18px 20px;
+      font-family: 'Georgia', serif;
+      font-size: 1.23rem;
+      cursor: pointer;
+      border-radius: 5px 5px 0 0;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.31);
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s cubic-bezier(.15,.93,.59,1), box-shadow 0.7s cubic-bezier(.15,.93,.59,1);
+      user-select: none;
+    }
+    .book-content {
+      max-height: 0;
+      overflow: hidden;
+      background: #22283a;
+      color: #dcdcdc;
+      padding: 0 20px;
+      font-size: 1.10rem;
+      font-style: italic;
+      border-radius: 0 0 5px 5px;
+      box-shadow: 0 0 13px rgba(0,0,0,0.14);
+      transition: max-height 0.8s cubic-bezier(.15,.93,.59,1), padding 0.8s, opacity 0.6s;
+      opacity: 0;
+      margin-bottom: 7px;
+    }
+    .book-section.opened .book-cover {
+      transform: rotateY(-160deg);
+      box-shadow: 8px 6px 22px rgba(0,0,0,0.60);
+    }
+    .book-section.opened .book-content {
+      max-height: 1500px;
+      padding: 19px 20px;
+      opacity: 1;
+    }
+    .book-cover::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0; width: 8px;
+      background: linear-gradient(180deg, #a59b89, #6e6551);
+      border-radius: 5px 0 0 5px;
+      box-shadow: inset 0 0 5px #645f48;
+    }
+    .book-section:not(.opened) .book-cover:hover {
+      background: #4a4a5c;
+    }
+    /* Flowers/Butterfly */
+    .flower-garden {
+      position: relative;
+      height: 110px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+    }
+    .flower { position: absolute; bottom: 0; border-radius: 50%;
+      background: radial-gradient(circle at 45% 55%, #ffe0e6 70%, #dab1c5 100%);
+      box-shadow: 0 0 20px #dab1c5aa; width: 46px; height: 46px;
+      animation: bloom 6s forwards, sway 5s infinite alternate;}
+    .flower1 { left: 30px; animation-delay: 0.2s; }
+    .flower2 { left: 120px; background:#feefa3; animation-delay: 1.3s;}
+    .flower3 { left: 220px; background:#c6f7e7; animation-delay: 2.1s;}
+    .flower4 { left: 310px; background:#ffefef; animation-delay: 2.7s;}
+    @keyframes bloom {0% { transform: scale(0.1); filter: blur(5px); opacity: 0; }
+      60% { filter: blur(0.5px); opacity: 1;} 100% { transform: scale(1); filter: blur(0); opacity: 1;}}
+    @keyframes sway { 0% { transform: translateY(0) rotate(-7deg);}
+      100% { transform: translateY(-14px) rotate(7deg);}}
+    .butterfly { width: 60px; height: 60px; position: absolute; top: 30px; left: 160px; z-index:2; pointer-events:none;
+      animation: butterfly-move 18s linear infinite alternate;}
+    .wing { width: 30px; height: 54px; background: linear-gradient(150deg, #f8e9e1, #ffe6f2 60%, #dab1c5 100%);
+      border-radius: 90% 30% 90% 28%; position: absolute; top: 0; transform-origin: right 80%;
+      box-shadow: 0 2px 9px #dab1c588;}
+    .wing.left { left: 0; z-index:1; animation: wing-flap 2.1s infinite;}
+    .wing.right { right: 0; transform: scaleX(-1); animation: wing-flap 2.1s infinite 1.05s;}
+    .body { width: 8px; height: 42px; background:#a97a5a; border-radius:40% 40% 80% 80%;
+      position: absolute; left:26px; top:10px; z-index:2;}
+    @keyframes wing-flap {0%,100% {transform:rotate(14deg);} 50% {transform:rotate(-19deg);}}
+    @keyframes butterfly-move { 0% {transform:translateY(0) scale(1);}
+      13% {transform:translate(-20px,12px) scale(1.1);}
+      27% {transform:translateX(34px) scale(.93);}
+      55% {transform: translateY(-19px) scale(1.07);}
+      65% {transform:translate(22px,38px) scale(1.10);}
+      100% {transform:translateY(-29px) scale(.87);} }
+    /* Cat hijab emoji style */
+    .cat-hijab { text-align: center; margin:23px 0; font-size: 2.8rem; }
+    .cat-hijab .caption { font-size:1rem; color:#e3cfdc; margin-top:7px; letter-spacing:.01em; }
+    /* Quran + Islamic Reference Styling */
+    .quran-block { margin: 8px 0 8px 0; padding: 15px 20px; background: #292d3e;
+      border-left: 4px solid #b2977d; box-shadow: 0 2px 10px rgba(255,255,255,0.05);}
+    .quran-arabic { font-family: 'Amiri', 'Scheherazade', 'Traditional Arabic', serif; font-size: 1.4rem; color: #e2d6c8;
+      font-weight: 700; direction: rtl; text-align: right; letter-spacing: 1px; margin-bottom: 5px; animation: floatEffect 4s ease-in-out infinite;}
+    .quran-english { font-family: 'Georgia', serif; font-size: 1.08rem; color: #9dbbd1; font-style: italic; text-align: left;
+      direction: ltr; margin-bottom: 4px; animation: glow 3s ease-in-out infinite;}
+    .quran-urdu { font-family: 'Noto Nastaliq Urdu', 'Times New Roman', serif; font-size: 1.04rem; color: #b0eee3;
+      direction: rtl; text-align: right; margin-bottom: 5px; animation: slideInLeft 1.5s ease forwards;}
+    .quran-ref { font-size: 0.95rem; color: #8a9bb8; text-align: left; direction: ltr; margin-top: 5px;}
+    .calligraphy { font-family: 'Amiri', 'Scheherazade', serif; font-size: 1.1rem; color: #e2d6c8; font-weight: 600; direction: rtl;
+      text-align: right; margin: 10px 0 2px 0;}
+    .english-translation { font-size: 1rem; color: #9dbbd1; font-style: italic; text-align: left; direction: ltr; margin: 2px 0 6px 0; display: block;}
+    .reference { font-size: 0.9rem; color: #8a9bb8; direction: ltr; display: block; text-align: left; margin-bottom: 8px;}
+    /* Poem/letter/motivation styling */
+    .poem { margin: 30px 0; padding: 20px; background: #292d3e; border-left: 4px solid #c3a995;
+      box-shadow: 0 2px 5px rgba(255,255,255,0.1); opacity: 1; margin-bottom: 25px;}
+    .poem span { display: block; font-size: 0.85rem; color: #b0adc6; margin-top: 10px; animation: glow 3s ease-in-out infinite;}
+    .letter { margin-top: 20px; padding-left: 10px; border-left: 3px solid #858585; font-style: italic; color: #ddd;}
+    .motiv-block { background: #22283a; border-left: 5px solid #98d1e4;
+      box-shadow: 0 1px 8px #21213960; padding: 30px 22px; margin: 32px 0 10px 0; border-radius: 9px;
+      text-align: center; font-size: 1.1rem; color: #c8e6fb; letter-spacing: 0.02em;}
+    .motiv-block span { display: block; color: #f7e2ce; margin-bottom: 9px; font-size: 1.02rem; font-style: italic;}
+    /* Animations */
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes slideInLeft { from {opacity: 0; transform: translateX(-25px);} to {opacity: 1; transform: translateX(0);} }
+    @keyframes glow { 0%,100% {color: #9dbbd1; text-shadow: none;} 50% {color: #b9a178; text-shadow: 0 0 9px #c3a995;} }
+    @keyframes floatEffect { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-5px);} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Yourself</h1>
+
+    <!-- Nasheed Player -->
+    <div class="nasheed-block">
+      <audio controls>
+        <source src="attached_assets/Ishq (From Lost Found)_1754048558209.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
+    <!-- Animated Flowers and Butterfly -->
+    <div class="flower-garden">
+      <div class="flower flower1"></div>
+      <div class="flower flower2"></div>
+      <div class="flower flower3"></div>
+      <div class="flower flower4"></div>
+      <div class="butterfly">
+        <div class="wing left"></div>
+        <div class="wing right"></div>
+        <div class="body"></div>
+      </div>
+    </div>
+    <!-- Cat (emoji) in hijab -->
+    <div class="cat-hijab">
+      🐱🧕🏻
+      <div class="caption">A cat with hijab, for Ayesha Ji</div>
+    </div>
+    <!-- Qur'an Reference Section: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Qur'an Inspiration 🌙</div>
+      <div class="book-content">
+        <div class="quran-block">
+          <div class="quran-arabic">إِنَّ مَعَ الْعُسْرِ يُسْرًا</div>
+          <div class="quran-english">"Indeed, with hardship [will be] ease."</div>
+          <div class="quran-urdu">بے شک ہر تنگی کے ساتھ آسانی ہے۔</div>
+          <div class="quran-ref">— Quran | Surah Ash-Sharh (94:6)</div>
+        </div>
+      </div>
+    </div>
+    <!-- Motivational Section: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Motivations For You 📖</div>
+      <div class="book-content">
+        <div class="motiv-block">
+          <span>You are stronger than every storm you have faced.</span>
+          <span>Your scars are proof that you were braver than what tried to break you.</span>
+          <span>May this night hold every prayer that your heart couldn't utter aloud.</span>
+          <span>Soft as dusk, brave as the moon—this is how healing begins.</span>
+          <span>Never doubt how far you've come, and how worthy you are of gentle light.</span>
+          <span>Be patient with yourself, for even the moon blooms slowly in the night sky.</span>
+          <span>If you've survived the darkness, you already carry the sunrise within.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Attribute Block for Her Name: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Aap Ka Naam Aur Waris 🌸</div>
+      <div class="book-content">
+        <p class="subtitle" style="font-size:1.08rem; color:#b0eee3;">
+          Jaise unka naam Ayesha hai,<br>
+          waise hi Hazrat Ayesha (RA) ki tarah unki masoomiyat aur sharafat bhi dil ko chhoo jaati hai.<br>
+          Allah kare unki zindagi bhi usi noor se roshan ho jaye.
+        </p>
+      </div>
+    </div>
+    <!-- Dil Ki Zubaan Section: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Dil Ki Zubaan 💖</div>
+      <div class="book-content">
+        <div class="poem">
+          "kabhi saath baitho toh kahein ke dard kya hai,<br>
+          dur se poochhoge toh khairiyat hi kahenge"
+          <span>— the kind of truth that only silence speaks</span>
+        </div>
+        <div class="poem">
+          "Maine tahajjud ki namaz tak manga tha use,<br>
+          Aur use paane wala masjid tak nahi gaya.."
+          <span>— and still, some prayers fall unheard</span>
+        </div>
+        <div class="poem">
+          "Mein woh dukh tumhe kaise sunau?<br>
+          Jiske baad gale lagana lazmi ho jata hai"
+          <span>— some sadness deserves to be held, not explained</span>
+        </div>
+        <div class="poem">
+          "Utra tha chand hamare bhi aangan Mein,<br>
+          Lekin Sitaaron ka gawara nahi tha,<br>
+          Hum to Sitaaron se bhi kar lete Bagawat,<br>
+          Lekin kya fayda Chand hi hamara Nahi tha"
+        </div>
+        <div class="poem">
+          "The most beloved deeds to Allah are those that are done consistently, even if they are little."
+          <span>— Prophet Muhammad (peace be upon him), Sahih al-Bukhari 6464</span>
+        </div>
+      </div>
+    </div>
+    <!-- Chhupi Hui Batein Section: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Chhupi Hui Batein 🌼</div>
+      <div class="book-content">
+        <div class="letter">Aap khush rahiye, lekin kabhi kabhi mujhe yaad kar lijiyega.</div>
+        <div class="letter">Mujhse milna naseeb na hua, lekin dua mein aana band mat karna.</div>
+        <div class="letter">Aap jaise log duaon mein aate hain, jawab mein nahi.</div>
+      </div>
+    </div>
+    <!-- Noor-e-Hidayat: Book style -->
+    <div class="book-section">
+      <div class="book-cover">Noor-e-Hidayat ✨</div>
+      <div class="book-content">
+        <div class="letter calligraphy" style="direction: ltr; text-align: left;">
+          Rasool Allah ﷺ ne irshad farmaya:<br>
+          <span style="font-weight:600;">"Fazilat mein koyi Ayesha (RA) se aage na nikal saka."</span><br>
+          <span class="english-translation">— Sunan At-Tirmidhi 3875</span>
+        </div>
+        <div class="letter" style="font-style: normal;">
+          Hazrat Ayesha (RA) ki ilm aur masoomiyat ki misaal qaim hai. Nabi Kareem ﷺ ne farmaya:
+          <br><span class="calligraphy" style="direction:ltr; text-align:left; font-weight: normal; color: #98d1e4;">
+            "Apni deen ka aadha hissa Ayesha (RA) se seekho."
+          </span>
+          <span class="english-translation">
+            — Ek riwayat, jo unki ilm aur paaki daaman hone ka saboot hai.
+          </span>
+        </div>
+        <div class="poem">
+          "Main ne Ayesha se zyada sacchi, masoom aur dil-nashiin aurat kisi ko nahi dekha."<br>
+          <span>— Hazrat Ayesha (RA) ka husn-e-kirdar sab ke liye misaal hai</span>
+        </div>
+        <div class="quran-block">
+          <div class="quran-arabic">
+            وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ
+          </div>
+          <div class="quran-english">
+            "And whoever puts their trust in Allah, then He alone is sufficient for them."
+          </div>
+          <div class="quran-urdu">
+            اور جو اللہ پر بھروسہ کرے، وہی اُس کے لیے کافی ہے۔
+          </div>
+          <div class="quran-ref">
+            — Quran | Surah At-Talaq (65:3)
+          </div>
+        </div>
+        <div class="letter">
+          "Supplication is itself the essence of worship."
+          <span style="font-size:0.9rem; color:#888;">— Hadith, Jami` at-Tirmidhi 3371</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom text -->
+  <div style="text-align: center; margin: 30px 0 20px 0; font-size: 1.5rem; color: #c0c0c0;">
+    -🙃
+  </div>
+
+  <!-- Multiple Butterflies -->
+  <div class="butterfly" style="top: 50px; left: 50px; animation-delay: 0s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <div class="butterfly" style="top: 200px; right: 80px; animation-delay: 3s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <div class="butterfly" style="top: 400px; left: 100px; animation-delay: 6s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <div class="butterfly" style="top: 600px; right: 120px; animation-delay: 9s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <div class="butterfly" style="top: 800px; left: 150px; animation-delay: 12s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+  <div class="butterfly" style="top: 1000px; right: 60px; animation-delay: 15s;">
+    <div class="wing left"></div>
+    <div class="wing right"></div>
+    <div class="body"></div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.book-section .book-cover').forEach(function(cover){
+      cover.addEventListener('click', function(){
+        var section = cover.closest('.book-section');
+        section.classList.toggle('opened');
+      });
+    });
+  </script>
+</body>
+</html>
