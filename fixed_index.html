@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Yourself | Tawfeeq's Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background-color: #1f1f2f;
+      font-family: sans-serif;
+      color: #f0f0f0;
+    }
+    .book-section {
+      width: 90%;
+      max-width: 800px;
+      margin: 80px auto;
+      perspective: 1500px;
+      transition: transform 1s;
+    }
+    .book-cover {
+      background-color: #3b3b5b;
+      padding: 30px;
+      cursor: pointer;
+      transform-origin: left;
+      transition: transform 1s ease;
+      box-shadow: 0 0 10px #000;
+      border-radius: 12px;
+    }
+    .book-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.7s ease;
+      background-color: #292944;
+      padding: 0 30px;
+      border-radius: 0 0 12px 12px;
+    }
+    .book-section.opened .book-content {
+      max-height: 1000px;
+      padding: 30px;
+    }
+    .book-section.opened .book-cover {
+      transform: rotateY(-10deg);
+    }
+    h1, h2 {
+      color: #ffb6c1;
+    }
+    .wing {
+      display: inline-block;
+      width: 50%;
+    }
+    .body {
+      text-align: center;
+      padding: 30px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="book-section">
+    <div class="book-cover">
+      <h1>🌸 Poetry for Her</h1>
+      <p>Click to open</p>
+    </div>
+    <div class="book-content">
+      <p>Tum meri dua ho, meri har ek khushi ki wajah ho...</p>
+      <p>Jab se mile ho, har din ek nayi duniya si lagti hai...</p>
+    </div>
+  </div>
+
+  <div class="book-section">
+    <div class="book-cover">
+      <h2>🦋 Butterfly & Soul</h2>
+      <p>Click to open</p>
+    </div>
+    <div class="book-content">
+      <p>Main tere liye woh titli hoon jo hamesha tere aas paas udti rahe...</p>
+    </div>
+  </div>
+
+  <div class="book-section">
+    <div class="book-cover">
+      <h2>📖 Quran & Heart</h2>
+      <p>Click to open</p>
+    </div>
+    <div class="book-content">
+      <p>"And We created you in pairs." — Surah An-Naba 78:8</p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.book-section .book-cover').forEach(function(cover){
+      cover.addEventListener('click', function(){
+        var section = cover.closest('.book-section');
+        section.classList.toggle('opened');
+      });
+    });
+  </script>
+
+</body>
+</html>
